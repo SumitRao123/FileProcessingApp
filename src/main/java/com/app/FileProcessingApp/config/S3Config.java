@@ -9,6 +9,7 @@ import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.sqs.SqsClient;
 
 @Configuration
 public class S3Config {
@@ -34,5 +35,11 @@ public class S3Config {
     public DynamoDbClient dynamoDbClient(){
          AwsBasicCredentials awsBasicCredentials = AwsBasicCredentials.create(access_key,secret_key);
          return DynamoDbClient.builder().region(Region.of(region)).credentialsProvider(StaticCredentialsProvider.create(awsBasicCredentials)).build();
+     }
+
+     @Bean
+     public SqsClient sqsClient(){
+         AwsBasicCredentials awsBasicCredentials = AwsBasicCredentials.create(access_key,secret_key);
+         return SqsClient.builder().region(Region.of(region)).credentialsProvider(StaticCredentialsProvider.create(awsBasicCredentials)).build();
      }
 }

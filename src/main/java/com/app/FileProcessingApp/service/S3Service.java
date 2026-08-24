@@ -29,7 +29,7 @@ public class S3Service {
     private DynamoDbService dynamoDbService;
 
     public String upload(MultipartFile multipartFile){
-        String fileId = UUID.randomUUID().toString() + "" + multipartFile.getOriginalFilename();
+        String fileId = UUID.randomUUID().toString() + " " + multipartFile.getOriginalFilename();
         try{
             String s3Key = "files/" + fileId + "/" + multipartFile.getOriginalFilename();
             PutObjectRequest putObjectRequest = PutObjectRequest.
@@ -43,7 +43,7 @@ public class S3Service {
                     .s3Key(s3Key).contentType(multipartFile.getContentType())
                     .fileSize(multipartFile.getSize()).uploadedAt(Instant.now().toString())
                     .status("UPLOADED").build();
-            dynamoDbService.saveMetaData(fileMetaData);
+//            dynamoDbService.saveMetaData(fileMetaData);
             s3Client.putObject(putObjectRequest, RequestBody.fromBytes(multipartFile.getBytes()));
             log.info("file uploaded {}",fileId);
             return fileId;
@@ -51,4 +51,6 @@ public class S3Service {
             throw  new RuntimeException("file upload failed" +ex.getMessage());
         }
     }
+
+
 }
