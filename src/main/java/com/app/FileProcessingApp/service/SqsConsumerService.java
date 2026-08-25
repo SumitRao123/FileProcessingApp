@@ -43,7 +43,7 @@ public class SqsConsumerService {
             // 2. Download file from S3
             // 3. Process file
             // 4. Save result to DynamoDB
-
+         System.out.println("Hello world");
 
 
     }
