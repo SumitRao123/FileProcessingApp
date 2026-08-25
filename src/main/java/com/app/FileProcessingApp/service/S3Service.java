@@ -4,13 +4,21 @@ import com.app.FileProcessingApp.model.FileMetaData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.core.Response;
+import software.amazon.awssdk.core.ResponseBytes;
 import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.services.dynamodb.model.Get;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.ObjectCannedACL;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -49,6 +57,23 @@ public class S3Service {
             return fileId;
         }catch (Exception ex){
             throw  new RuntimeException("file upload failed" +ex.getMessage());
+        }
+    }
+    public Path download(String objectName,String bucketName){
+        try{
+            GetObjectRequest getObjectRequest = GetObjectRequest.builder().bucket(bucketName).key(objectName).build();
+            ResponseBytes<GetObjectResponse> response = s3Client.getObjectAsBytes(getObjectRequest);
+            Path tempFile =
+                    Files.createTempFile("file-", "-" + Path.of(objectName).getFileName());
+
+            Files.write(
+                    tempFile,
+                    response.asByteArray()
+            );
+
+            return tempFile;
+         } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 

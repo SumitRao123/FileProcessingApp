@@ -27,10 +27,5 @@ public class FileController {
         );
     }
 
-    @GetMapping("/files")
-    public ResponseEntity<?> getAllFiles(){
-        service.processMessage();
 
-        return ResponseEntity.ok("Message processed");
-    }
 }
