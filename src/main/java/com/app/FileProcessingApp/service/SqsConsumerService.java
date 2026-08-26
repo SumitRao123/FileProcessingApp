@@ -1,5 +1,6 @@
 package com.app.FileProcessingApp.service;
 
+import com.app.FileProcessingApp.model.FileProcessingResult;
 import com.app.FileProcessingApp.model.S3FileMessage;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,6 +29,9 @@ public class SqsConsumerService {
     private ObjectMapper objectMapper;
 
     @Autowired
+    private DynamoDbService dynamoDbService;
+
+    @Autowired
     private FileProcessingService fileProcessingService;
 
     private String queueUrl = ("https://sqs.ap-south-1.amazonaws.com/332040500916/file-processing-queue.fifo");
@@ -41,14 +45,17 @@ public class SqsConsumerService {
             // 1. Parse bucket/key
             S3FileMessage s3FileMessage = objectMapper.readValue(message.body(),S3FileMessage.class);
             String objectName = URLDecoder.decode(s3FileMessage.getKey(), StandardCharsets.UTF_8);
-        System.out.println(objectName);
+            System.out.println(objectName);
             // 2. Download file from S3
             InputStream inputStream = s3Service.download(objectName,s3FileMessage.getBucket());
 //            System.out.println(path.getFileName());
             // 3. Process file
-            fileProcessingService.process(inputStream);
+             FileProcessingResult result=  fileProcessingService.process(inputStream);
+             String[] arr = objectName.split(" ");
 
             // 4. Save result to DynamoDB
+             if(arr.length > 1)
+               dynamoDbService.saveCSVMetaData(result,arr[0],arr[1]);
 
 
 

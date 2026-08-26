@@ -1,6 +1,7 @@
 package com.app.FileProcessingApp.service;
 
 import com.app.FileProcessingApp.model.FileMetaData;
+import com.app.FileProcessingApp.model.FileProcessingResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,8 @@ public class DynamoDbService {
     @Autowired
     private DynamoDbClient dynamoDbClient;
 
-    private  String tablename = "FileMetaData";
+    private  String tablename1 = "FileMetaData";
+    private  String tablename2 = "EmpMetaData";
 
     public void saveMetaData(FileMetaData fileMetaData){
          try{
@@ -32,12 +34,32 @@ public class DynamoDbService {
              item.put("fileSize", AttributeValue.builder().n(String.valueOf(fileMetaData.getFileSize())).build());
              item.put("uploadedAt", AttributeValue.builder().s(fileMetaData.getUploadedAt()).build());
              item.put("status", AttributeValue.builder().s(fileMetaData.getStatus()).build());
-             PutItemRequest putItemRequest = PutItemRequest.builder().tableName(tablename).item(item).build();
+             PutItemRequest putItemRequest = PutItemRequest.builder().tableName(tablename1).item(item).build();
              log.info("File Meta Data uploaded {}");
              dynamoDbClient.putItem(putItemRequest);
 
          }catch (Exception ex){
              throw new RuntimeException("Failed to save file Metadata " + ex.getMessage() );
          }
+    }
+    public void saveCSVMetaData(FileProcessingResult result,String fileId, String filename){
+        try{
+            Map<String, AttributeValue> item = new HashMap<>();
+            item.put("FileId", AttributeValue.builder().s(fileId).build());
+            item.put("fileName", AttributeValue.builder().s(filename).build());
+            item.put("status", AttributeValue.builder().s("COMPLETED").build());
+            item.put("totalRecords", AttributeValue.builder().s(String.valueOf(result.getTotalRecords())).build());
+            item.put("successfulRecords", AttributeValue.builder().s(String.valueOf(result.getSuccessfulRecords())).build());
+            item.put("failedRecords", AttributeValue.builder().s(String.valueOf(result.getFailedRecords())).build());
+            PutItemRequest putItemRequest = PutItemRequest.builder().tableName(tablename2).item(item).build();
+
+
+
+            log.info("Emp Meta Data uploaded {}");
+            dynamoDbClient.putItem(putItemRequest);
+
+        }catch (Exception ex){
+            throw new RuntimeException("Failed to save file Metadata " + ex.getMessage() );
+        }
     }
 }
