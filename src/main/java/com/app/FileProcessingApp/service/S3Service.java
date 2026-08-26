@@ -17,6 +17,7 @@ import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.ObjectCannedACL;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
@@ -59,19 +60,11 @@ public class S3Service {
             throw  new RuntimeException("file upload failed" +ex.getMessage());
         }
     }
-    public Path download(String objectName,String bucketName){
+    public InputStream download(String objectName, String bucketName){
         try{
             GetObjectRequest getObjectRequest = GetObjectRequest.builder().bucket(bucketName).key(objectName).build();
-            ResponseBytes<GetObjectResponse> response = s3Client.getObjectAsBytes(getObjectRequest);
-            Path tempFile =
-                    Files.createTempFile("file-", "-" + Path.of(objectName).getFileName());
 
-            Files.write(
-                    tempFile,
-                    response.asByteArray()
-            );
-
-            return tempFile;
+            return s3Client.getObject(getObjectRequest);
          } catch (Exception e) {
             throw new RuntimeException(e);
         }

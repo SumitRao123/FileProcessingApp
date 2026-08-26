@@ -10,6 +10,7 @@ import software.amazon.awssdk.services.sqs.SqsClient;
 import software.amazon.awssdk.services.sqs.model.Message;
 import software.amazon.awssdk.services.sqs.model.ReceiveMessageRequest;
 
+import java.io.InputStream;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -26,6 +27,9 @@ public class SqsConsumerService {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private FileProcessingService fileProcessingService;
+
     private String queueUrl = ("https://sqs.ap-south-1.amazonaws.com/332040500916/file-processing-queue.fifo");
 
     @SqsListener("file-processing-queue.fifo")
@@ -38,12 +42,14 @@ public class SqsConsumerService {
             S3FileMessage s3FileMessage = objectMapper.readValue(message.body(),S3FileMessage.class);
             String objectName = URLDecoder.decode(s3FileMessage.getKey(), StandardCharsets.UTF_8);
         System.out.println(objectName);
-            Path path = s3Service.download(objectName,s3FileMessage.getBucket());
-            System.out.println(path.getFileName());
             // 2. Download file from S3
+            InputStream inputStream = s3Service.download(objectName,s3FileMessage.getBucket());
+//            System.out.println(path.getFileName());
             // 3. Process file
+            fileProcessingService.process(inputStream);
+
             // 4. Save result to DynamoDB
-         System.out.println("Hello world");
+
 
 
     }
