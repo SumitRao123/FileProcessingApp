@@ -1,0 +1,60 @@
+[33mcommit 49a675e5db71cea31fc944f872016a94bb4a9d4e[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: Sumit <sumitkherkar169@gmail.com>
+Date:   Sat Aug 29 12:06:51 2026 +0530
+
+    Removed secrets
+
+[33mcommit 9bea02bb791f5f9c6afab8ae184a46d428b69fde[m
+Author: Sumit <sumitkherkar169@gmail.com>
+Date:   Sat Aug 29 12:05:26 2026 +0530
+
+    ignore aws secret
+
+[33mcommit 7e930ae74401cab6b303da92ffe55122321f7c1e[m[33m ([m[1;32mdevelop[m[33m)[m
+Merge: 8e3afa4 c246fcf
+Author: Sumit <sumitkherkar169@gmail.com>
+Date:   Sat Aug 29 12:03:21 2026 +0530
+
+    some changes added
+
+[33mcommit c246fcfa29dc6d24d2b3ee257ac915be4a4d556a[m[33m ([m[1;32mfeature-v3[m[33m)[m
+Author: Sumit <sumitkherkar169@gmail.com>
+Date:   Thu Aug 27 10:41:39 2026 +0530
+
+    Some local changes
+
+[33mcommit 8e3afa456e3a8340c015496fdf271f5d291ebc6a[m[33m ([m[1;32mfeature-v1[m[33m)[m
+Author: Sumit <sumitkherkar169@gmail.com>
+Date:   Wed Aug 26 11:47:22 2026 +0530
+
+    Dynamo db feature added
+
+[33mcommit 8780aca61a2beb99b1068c1887d1894808413b2f[m
+Author: Sumit <sumitkherkar169@gmail.com>
+Date:   Wed Aug 26 11:14:30 2026 +0530
+
+    build till CSV Parsing
+
+[33mcommit 9fcbcbe3f02572c78df7713192f9555862a7e0b8[m
+Author: Sumit <sumitkherkar169@gmail.com>
+Date:   Tue Aug 25 11:05:05 2026 +0530
+
+    testing
+
+[33mcommit f722c86f83fe9bcda529bb49b9fb967250916d24[m
+Author: Sumit <sumitkherkar169@gmail.com>
+Date:   Tue Aug 25 10:52:39 2026 +0530
+
+    build till sqs consumer
+
+[33mcommit ba37e08a353a9fcc7d05c9163eb90e7db5bc154a[m
+Author: Sumit <sumitkherkar169@gmail.com>
+Date:   Mon Aug 24 11:22:35 2026 +0530
+
+    built till lambda and SQS
+
+[33mcommit 5a7020d54d1b05b9813994e5628525bf7af697d0[m[33m ([m[1;32mfeature-v2[m[33m)[m
+Author: Sumit <sumitkherkar169@gmail.com>
+Date:   Wed Aug 12 13:16:43 2026 +0530
+
+    FileProcessing Code
