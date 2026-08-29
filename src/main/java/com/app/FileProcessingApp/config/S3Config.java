@@ -20,19 +20,17 @@ public class S3Config {
 
      @Bean
      public S3Client s3Client(){
-         AwsBasicCredentials awsBasicCredentials = AwsBasicCredentials.create(access_key,secret_key);
          return S3Client.create();
      }
 
      @Bean
     public DynamoDbClient dynamoDbClient(){
-         AwsBasicCredentials awsBasicCredentials = AwsBasicCredentials.create(access_key,secret_key);
+
          return DynamoDbClient.create();
      }
 
      @Bean
      public SqsClient sqsClient(){
-         AwsBasicCredentials awsBasicCredentials = AwsBasicCredentials.create(access_key,secret_key);
          return SqsClient.create();
      }
 }
