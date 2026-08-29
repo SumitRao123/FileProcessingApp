@@ -16,32 +16,23 @@ import software.amazon.awssdk.services.sqs.SqsClient;
 @Profile("dev")
 public class S3Config {
 
-     @Value("${aws.s3.access_key}")
-     private String access_key;
 
-     @Value("${aws.s3.secret_key}")
-     private  String secret_key;
-
-     @Value("${aws.s3.region}")
-    private  String region;
 
      @Bean
      public S3Client s3Client(){
          AwsBasicCredentials awsBasicCredentials = AwsBasicCredentials.create(access_key,secret_key);
-         return S3Client.builder().region(Region.of(region)).
-                 credentialsProvider(StaticCredentialsProvider.
-                         create(awsBasicCredentials)).build();
+         return S3Client.create();
      }
 
      @Bean
     public DynamoDbClient dynamoDbClient(){
          AwsBasicCredentials awsBasicCredentials = AwsBasicCredentials.create(access_key,secret_key);
-         return DynamoDbClient.builder().region(Region.of(region)).credentialsProvider(StaticCredentialsProvider.create(awsBasicCredentials)).build();
+         return DynamoDbClient.create();
      }
 
      @Bean
      public SqsClient sqsClient(){
          AwsBasicCredentials awsBasicCredentials = AwsBasicCredentials.create(access_key,secret_key);
-         return SqsClient.builder().region(Region.of(region)).credentialsProvider(StaticCredentialsProvider.create(awsBasicCredentials)).build();
+         return SqsClient.create();
      }
 }
