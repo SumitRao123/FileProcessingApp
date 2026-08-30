@@ -41,7 +41,7 @@
 
         <spring-cloud-aws.version>3.3.0</spring-cloud-aws.version>
 
-        <lombok.version>1.18.36</lombok.version>
+        <lombok.version>1.18.42</lombok.version>
 
     </properties>
 
