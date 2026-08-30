@@ -1,77 +1,75 @@
+
   version: 0.2
 
   phases:
 
     pre_build:
       commands:
-
         - echo "===== Java Version ====="
         - java -version
 
         - echo "===== Maven Version ====="
         - mvn -version
 
-        - echo "===== Building Spring Boot Application ====="
+        - echo "===== Building Application ====="
         - mvn clean package -DskipTests
 
-        - echo "===== Checking Target Directory ====="
+        - echo "===== Target Directory ====="
         - ls -la target/
 
         - echo "===== Logging in to Amazon ECR ====="
         - aws --version
 
-        - REPOSITORY_URI=332040500916.dkr.ecr.ap-south-1.amazonaws.com/fileapp/fileprocessingrepo
+        - 'REPOSITORY_URI=332040500916.dkr.ecr.ap-south-1.amazonaws.com/fileapp/fileprocessingrepo'
 
-        - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin $REPOSITORY_URI
+        - 'aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin $REPOSITORY_URI'
 
-        - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+        - 'COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)'
 
-        - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
+        - 'IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" "{print $2}")'
 
         - echo "Repository URI: $REPOSITORY_URI"
-        - echo "Image tag: $IMAGE_TAG"
+        - echo "Image Tag: $IMAGE_TAG"
 
 
     build:
       commands:
-
         - echo "===== Build Started ====="
         - echo "Build started on `date`"
 
         - echo "===== Building Docker Image ====="
-        - docker build -t $REPOSITORY_URI:latest .
+        - 'docker build -t $REPOSITORY_URI:latest .'
 
         - echo "===== Tagging Docker Image ====="
-        - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+        - 'docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG'
 
 
     post_build:
       commands:
-
         - echo "===== Build Completed ====="
         - echo "Build completed on `date`"
 
         - echo "===== Pushing Docker Images ====="
 
-        - docker push $REPOSITORY_URI:latest
+        - 'docker push $REPOSITORY_URI:latest'
 
-        - docker push $REPOSITORY_URI:$IMAGE_TAG
+        - 'docker push $REPOSITORY_URI:$IMAGE_TAG'
 
-        - echo "===== Creating imagedefinitions.json ====="
+        - echo "===== Creating Image Definition ====="
 
-        - DOCKER_CONTAINER_NAME=file-processing-app
+        - 'DOCKER_CONTAINER_NAME=file-processing-app'
 
-        - printf '[{"name":"%s","imageUri":"%s"}]' "$DOCKER_CONTAINER_NAME" "$REPOSITORY_URI:$IMAGE_TAG" > imagedefinitions.json
+        - 'printf "[{\"name\":\"%s\",\"imageUri\":\"%s\"}]" "$DOCKER_CONTAINER_NAME" "$REPOSITORY_URI:$IMAGE_TAG" > imagedefinitions.json'
 
-        - echo "===== Docker Container Name ====="
-        - echo $DOCKER_CONTAINER_NAME
+        - echo "===== Container Name ====="
+        - echo "$DOCKER_CONTAINER_NAME"
 
-        - echo "===== Image Definition ====="
+        - echo "===== imagedefinitions.json ====="
         - cat imagedefinitions.json
 
 
   artifacts:
     files:
-
       - imagedefinitions.json
       - target/FileProcessingApp-0.0.1-SNAPSHOT.jar
+
