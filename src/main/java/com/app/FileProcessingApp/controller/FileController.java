@@ -27,5 +27,9 @@ public class FileController {
         );
     }
 
-
+    @GetMapping("/health")
+    public String getHealth()
+    {
+         return "UP";
+    }
 }
