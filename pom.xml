@@ -224,28 +224,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-
-                <executions>
-
-                    <execution>
-
-                        <id>repackage</id>
-
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-
-                        <configuration>
-
-                            <!-- Spring Boot executable JAR -->
-                            <classifier>boot</classifier>
-
-                        </configuration>
-
-                    </execution>
-
-                </executions>
-
             </plugin>
 
 
@@ -254,41 +232,6 @@
             <!-- Lambda JAR -->
             <!-- ========================= -->
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.6.0</version>
-
-                <executions>
-
-                    <execution>
-
-                        <id>lambda-package</id>
-
-                        <phase>package</phase>
-
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-
-                        <configuration>
-
-                            <!-- Keep the normal JAR -->
-                            <shadedArtifactAttached>true</shadedArtifactAttached>
-
-                            <!-- Lambda artifact -->
-                            <shadedClassifierName>lambda</shadedClassifierName>
-
-                            <!-- Don't modify pom.xml -->
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-
-                        </configuration>
-
-                    </execution>
-
-                </executions>
-
-            </plugin>
 
         </plugins>
 
